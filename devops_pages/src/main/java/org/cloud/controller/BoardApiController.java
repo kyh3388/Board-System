@@ -86,6 +86,11 @@ public class BoardApiController {
             @ModelAttribute BoardDto board,
             MultipartHttpServletRequest request) throws Exception {
 
+        BoardDto oldBoard = boardService.selectDetail(boardId);
+        if (oldBoard == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         board.setBoardId(boardId);
         boardService.updateBoard(board, request);
 
@@ -99,6 +104,12 @@ public class BoardApiController {
     // 게시글 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<Map<String, Object>> deleteBoard(@PathVariable("boardId") int boardId) throws Exception {
+
+        BoardDto oldBoard = boardService.selectDetail(boardId);
+        if (oldBoard == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         boardService.deleteBoard(boardId);
 
         Map<String, Object> result = new HashMap<>();
