@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시판 목록</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+	<h2>게시글 목록</h2>
+	<table class="board_list">
+		<colgroup>
+			<col width="10%">
+			<col width="*">
+			<col width="15%">
+			<col width="20%">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>조회수</th>
+				<th>작성일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${#lists.size(list) > 0}" th:each="list : ${list}">
+				<td th:text="${list.boardId}"></td>
+				<td>
+					<a th:href="@{/board/openBoardDetail.do(boardId=${list.boardId})}", pageNum=${pageMaker.cri.pageNum}, amount=${pageMaker.cri.amount}  th:text="${list.title}"></a>
+				</td>
+				<td th:text="${list.hitCnt}"></td>
+				<td th:text="${list.createdDatetime}"></td>
+			</tr>
+			<tr th:unless="${#lists.size(list) > 0}">
+				<td colspan="4">조회된 결과가 없습니다.</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="pagination" style="text-align: center; margin-top: 20px;">
+		<a th:if="${pageMaker.prev}" th:href="@{/board/openBoardList.do(pageNum=${pageMaker.startPage - 1}, amount=${pageMaker.cri.amount})}">이전</a>
+		
+		<!--<th:block th:each="num: ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+			<a th:href="@{/board/openBoardList.do(pageNum=${num}, amount=${pageMaker.cri.amount})}" th:text="${num}" th:classappend="${pageMaker.cri.pageNum == num} ? 'active' : ''" style="margin: 0 5px; text-decoration: none;"></a>
+		</th:block>-->
+		
+		<span th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+	        <a th:href="@{/board/openBoardList.do(pageNum=${num}, amount=${pageMaker.cri.amount})}" 
+	           th:text="${num}" 
+	           th:classappend="${pageMaker.cri.pageNum == num} ? 'active' : ''"
+	           style="margin: 0 5px; text-decoration: none;"></a>
+	    </span>
+		
+		<a th:if="${pageMaker.next}" th:href="@{/board/openBoardList.do(pageNum=${pageMaker.endPage + 1}, amount=${pageMaker.cri.amount})}">다음</a>
+	</div>
+	
+	<div style="margin-top: 20px;">
+		<a th:href="@{/board/openBoardWrite.do}" class="btn">글쓰기</a>
+	</div>
+</div>
+</body>
+</html>

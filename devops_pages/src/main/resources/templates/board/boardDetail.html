@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시글 상세 조회</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+	<h2>게시글 상세조회</h2>
+	<form id="frm" method="post" enctype="multipart/form-data">
+		<table class="board_detail">
+				<colgroup>
+					<col width="15%">
+					<col width="35%">
+					<col width="15%">
+					<col width="35%">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th scope="row">글번호</th>
+						<td th:text="${board.boardId}"></td>
+						<th scope="row">조회수</th>
+						<td th:text="${board.hitCnt}"></td>
+					</tr>
+					<tr>
+						<th scope="row">작성자</th>
+						<td th:text="${board.creatorId}"></td>
+						<th scope="row">작성일</th>
+						<td th:text="${board.createdDatetime}"></td>
+					</tr>
+					<tr>
+						<th scope="row">제목</th>
+						<td colspan="3">
+							<input type="text" id="title" name="title" th:value="${board.title}">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<textarea title="내용" id="contents" name="contents" th:text="${board.contents}"></textarea>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>첨부파일 목록</th>
+						<td>
+							<p th:text="${'파일 개수: ' + (board.fileList != null ? board.fileList.size() : '목록없음')}"></p>
+							<ul style="padding-left: 0;">
+								<li th:each="file : ${board.fileList}" th:id="'file-' + ${file.fileIdx}">
+									<span th:text="${file.originalFileName}"></span>
+									<button type="button" class="btn" th:onclick="fn_deleteFile([[${file.fileIdx}]])">파일삭제</button>
+								</li>
+							</ul>
+							<div style="margin-top: 10px;">
+								<label>새 파일추가:</label>
+								<input type="file" name="files" multiple="multiple">
+							</div>
+						</td>
+					</tr>
+				</tbody>
+		</table>
+		<input type="hidden" name="boardId" th:value="${board.boardId}">
+		<input type="hidden" name="creatorId" th:value="${board.creatorId}">
+		<input type="hidden" name="pageNum" th:value="${cri.pageNum}">
+		<input type="hidden" name="amount" th:value="${cri.amount}">
+	</form>
+	
+	<div style="margin-top: 15px; text-align: right;">
+		<a th:href="@{/board/openBoardList.do(pageNum=${cri.pageNum}, amount=${cri.amount})}" class="btn">목록으로</a>
+		<button type="button" id="btnUpdate" class="btn">수정하기</button>
+		<button type="button" id="btnDelete" class="btn">삭제하기</button>
+	</div>
+</div>
+
+<script th:inline="javascript">
+	document.getElementById('btnUpdate').addEventListener('click', function() {
+        const title = document.getElementById('title').value;
+        if (!title.trim()) {
+            alert("제목을 입력해주세요.");
+            return;
+        }
+        if (confirm("수정사항을 저장하시겠습니까?")) {
+            const frm = document.getElementById('frm');
+            frm.action = "/board/updateBoard.do";
+            frm.submit();
+        }
+    });
+    
+    document.getElementById('btnDelete').addEventListener('click', function() {
+        if (confirm("정말로 이 게시글을 삭제하시겠습니까?\n삭제 후에는 복구가 불가능합니다.")) {
+            const frm = document.getElementById('frm');
+            frm.action = "/board/deleteBoard.do";
+            frm.submit();
+        }
+    });
+
+	function fn_deleteFile(fileIdx) {
+        if (confirm("파일을 즉시 삭제하시겠습니까?")) {
+            fetch('/board/deleteFile.do?fileIdx=' + fileIdx, {
+                method: 'POST'
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "success") {
+                    alert("파일이 삭제되었습니다.");
+                    document.getElementById('file-' + fileIdx).remove();
+                }
+            })
+            .catch(error => alert("삭제 중 오류가 발생했습니다."));
+        }
+    }
+</script>
+</body>
+</html>
+
+
+
+
