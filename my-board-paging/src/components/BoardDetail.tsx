@@ -121,7 +121,7 @@ const BoardDetail: React.FC = () => {
       normalizedPath.lastIndexOf("/") + 1,
     );
 
-    // 배포 환경에서는 상대경로로 처리
+    // 배포 환경에서는 상대경로 사용
     return `/upload/${encodeURIComponent(fileName)}`;
   };
 
