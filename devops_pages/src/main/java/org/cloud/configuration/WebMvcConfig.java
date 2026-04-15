@@ -11,6 +11,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// TODO Auto-generated method stub
 		WebMvcConfigurer.super.addResourceHandlers(registry);
-		registry.addResourceHandler("/upload/**").addResourceLocations("file:///C:/upload/").setCachePeriod(3600);
+		registry.addResourceHandler("/upload/**").addResourceLocations("file:/home/ubuntu/upload/").setCachePeriod(3600);
 	}
 }
