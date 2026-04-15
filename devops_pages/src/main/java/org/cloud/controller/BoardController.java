@@ -56,6 +56,7 @@ public class BoardController {
 	
 	@GetMapping("/openBoardDetail.do")
 	public String openBoardDetail(@RequestParam("boardId") int boardId, Model model, @ModelAttribute("cri") Criteria cri) throws Exception {
+		boardService.increaseHitCount(boardId);
 		BoardDto board = boardService.selectDetail(boardId);
 		model.addAttribute("board", board);
 		return "board/boardDetail";

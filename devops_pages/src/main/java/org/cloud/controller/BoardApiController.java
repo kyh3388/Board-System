@@ -40,13 +40,13 @@ public class BoardApiController {
         if (cri.getAmount() <= 0) {
             cri.setAmount(10);
         }
-
+        
         List<BoardDto> list = boardService.selectBoardListPaging(cri);
         int total = boardService.selectBoardTotalCount();
 
         Map<String, Object> result = new HashMap<>();
         result.put("list", list);
-        result.put("pageInfo", new PageResponse(cri, total));
+        result.put("pageMarker", new PageResponse(cri, total));
 
         return ResponseEntity.ok(result);
     }
@@ -54,7 +54,8 @@ public class BoardApiController {
     // 게시글 상세 조회
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardDto> getBoardDetail(@PathVariable("boardId") int boardId) throws Exception {
-        BoardDto board = boardService.selectDetail(boardId);
+    	boardService.increaseHitCount(boardId);
+    	BoardDto board = boardService.selectDetail(boardId);
 
         if (board == null) {
             return ResponseEntity.notFound().build();

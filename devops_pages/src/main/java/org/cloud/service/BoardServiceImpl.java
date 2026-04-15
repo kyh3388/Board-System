@@ -37,11 +37,19 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardDto selectDetail(int boardId) throws Exception {
 		// TODO Auto-generated method stub
-		boardMapper.updateHitCount(boardId);
 		BoardDto board = boardMapper.selectDetail(boardId);
-		List<FileDto> fileList = boardMapper.selectFileList(boardId);
-		board.setFileList(fileList);
+
+		if (board != null) {                                       
+	        List<FileDto> fileList = boardMapper.selectFileList(boardId);
+	        board.setFileList(fileList);
+	    }
+		
 		return board;
+	}
+	
+	@Override
+	public void increaseHitCount(int boardId) throws Exception {   
+	    boardMapper.updateHitCount(boardId);                       
 	}
 	
 	@Override

@@ -12,6 +12,9 @@ public interface BoardService {
 	List<BoardDto> selectBoardList() throws Exception;
 	void insertBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
 	BoardDto selectDetail(int boardId) throws Exception;
+	
+	void increaseHitCount(int boardId) throws Exception;
+	
 	void updateBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
 	void deleteBoard(int boardId) throws Exception;
 	void deleteFile(int fileIdx) throws Exception;
