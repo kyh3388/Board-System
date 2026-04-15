@@ -108,7 +108,7 @@ const BoardDetail: React.FC = () => {
 
     // 이미 /upload/... 형태로 저장된 경우
     if (normalizedPath.startsWith("/upload/")) {
-      return `http://localhost:8080${normalizedPath}`;
+      return normalizedPath;
     }
 
     // http:// 또는 https:// 형태로 이미 완전한 URL인 경우
@@ -120,7 +120,9 @@ const BoardDetail: React.FC = () => {
     const fileName = normalizedPath.substring(
       normalizedPath.lastIndexOf("/") + 1,
     );
-    return `http://localhost:8080/upload/${encodeURIComponent(fileName)}`;
+
+    // 배포 환경에서는 상대경로로 처리
+    return `/upload/${encodeURIComponent(fileName)}`;
   };
 
   if (!board) {
