@@ -95,7 +95,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		List<FileDto> fileList = new ArrayList<FileDto>();
-		String path = "C:/upload/";
+		String path = "/home/ubuntu/upload/";
 		File dir = new File(path);
 		
 		if (!dir.exists()) {
