@@ -4,7 +4,7 @@
 # 도구
 이클립스(스프링부트, 그래들), VSCode(리액트-타입스크립트), DB(MySQL)
 
-Spring MVC, Thymeleaf, MyBatis
+Java 17, Spring Boot 3.5.11, Spring Web(MVC), Thymeleaf, MyBatis 3.0.5, MySQL, log4jdbc
 
 # 기능
 CRUD,
